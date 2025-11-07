@@ -21,9 +21,13 @@ import java.io.IOException;
  *
  *  The Main class provides the method main.
  *
- *  This method takes weather for every day from the weather forecast using cycle FOR.
- *  Then it takes "temp_avg" parameter for every day and summarize them.
- *  Finally, it calculates the average value of the "temp_avg" for those days;
+ *  In main method we are setting the variables values (uriForecast, headerName, headerValue)
+ *  and passing them to the HttpRequester.getResponseBody method which
+ *  returns the body of HTTP-response from Yandex-Weather service in String(json-string) format.
+ *
+ *  Then we are transforming this String(json-string) to the JsonObject format using external library GSON.
+ *
+ *  Finally, we are printing some data we need from Json to the console.
  *
  * @version
 1.7 07 Nov 2025  * @author
