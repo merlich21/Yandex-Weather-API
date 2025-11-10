@@ -33,10 +33,16 @@ import com.google.gson.JsonObject;
 Skotnikov Alexander  */
 public class TempAvgCounter {
 
-    public static int countTempAvg(JsonObject jsonObjectForecast, int daysNumber) {
+    public static int countTempAvg(JsonObject jsonObjectForecast, int daysNumber)
+            throws NullPointerException, ArrayIndexOutOfBoundsException {
         int tempSum = 0;
         int tempAvg = 0;
 
+        if (daysNumber <= 0) {
+            System.out.println(Colorizer.ANSI_YELLOW +
+                    "ERROR! daysNumber parameter must be a positive value ( daysNumber > 0 )!");
+            return 34404;
+        }
         for (int i = 0; i < daysNumber; i++) {
             JsonObject dayForecast = jsonObjectForecast.getAsJsonArray("forecasts")
                     .get(i)

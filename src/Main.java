@@ -33,19 +33,51 @@ import java.io.IOException;
 1.7 07 Nov 2025  * @author
 Skotnikov Alexander  */
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
 
         String headerName = "X-Yandex-Weather-Key";
         String headerValue = "demo_yandex_weather_api_key_ca6d09349ba0";
         String uriForecast = "https://api.weather.yandex.ru/v2/forecast?lat=52.37125&lon=4.89388&limit=7";
+        String jsonStringForecast;
+        JsonObject jsonObjectForecast;
 
-        String jsonStringForecast = HttpRequester.getResponseBody(uriForecast, headerName, headerValue);
+        try {
+            jsonStringForecast = HttpRequester.getResponseBody(uriForecast, headerName, headerValue);
+        } catch (Exception e) {
+            System.out.println(Colorizer.ANSI_YELLOW + "ERROR! BAD (may be NULL) RESPONSE FROM THE WEATHER SERVICE!");
+            return;
+        }
 
-        JsonObject jsonObjectForecast = JsonParser.parseString(jsonStringForecast)
-                .getAsJsonObject();
+        try {
+            jsonObjectForecast = JsonParser.parseString(jsonStringForecast)
+                    .getAsJsonObject();
+        } catch (Exception e) {
+            System.out.println(Colorizer.ANSI_YELLOW + "ERROR! BAD JSON-SYNTAX IN WEATHER SERVICE`S RESPONSE!");
+            return;
+        }
 
-        System.out.println("forecast: " + jsonObjectForecast);
-        System.out.println("forecast.fact.temp: " + jsonObjectForecast.getAsJsonObject("fact").get("temp"));
-        System.out.println("forecasts.parts.day.temp_avg: " + TempAvgCounter.countTempAvg(jsonObjectForecast, 7));
+        System.out.println(Colorizer.ANSI_GREEN + "forecast: " + Colorizer.ANSI_BLUE + jsonObjectForecast);
+        try {
+            System.out.println(Colorizer.ANSI_GREEN + "forecast.fact.temp: " + Colorizer.ANSI_BLUE + jsonObjectForecast.getAsJsonObject("fact").get("temp"));
+        } catch (Exception e) {
+            System.out.println(Colorizer.ANSI_YELLOW + "ERROR! BAD JSON-SYNTAX IN WEATHER SERVICE`S RESPONSE (or NULL RESPONSE)!");
+            return;
+        }
+        try {
+            System.out.println(Colorizer.ANSI_GREEN + "forecasts.parts.day.temp_avg: " + Colorizer.ANSI_BLUE + TempAvgCounter.countTempAvg(jsonObjectForecast, 7));
+        } catch (Exception e) {
+            System.out.println(Colorizer.ANSI_YELLOW + "ERROR! BAD (may be NULL) RESPONSE FROM THE WEATHER SERVICE or WRONG daysNumber PARAMETER`S VALUE!");
+        }
+            //        } catch () {
+//
+//            System.out.println(Colorizer.ANSI_YELLOW +
+//                    "ERROR! daysNumber parameter must be a positive value ( daysNumber > 0 )!");
+//        } catch () {
+//
+//            System.out.println(Colorizer.ANSI_YELLOW +
+//                    "ERROR! daysNumber parameter must be a positive value ( daysNumber > 0 )!");
+//        } finally {
+//            return;
+//        }
     }
 }
