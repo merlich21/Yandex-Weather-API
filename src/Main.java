@@ -54,8 +54,8 @@ public class Main {
             return;
         }
 
-        System.out.println(Colorizer.ANSI_GREEN + "forecast: "
-                + Colorizer.ANSI_BLUE + jsonObjectForecast);
+        System.out.println(Colorizer.ANSI_GREEN + "forecast: " + Colorizer.ANSI_BLUE + jsonObjectForecast);
+
         try {
             System.out.println(Colorizer.ANSI_GREEN + "forecast.fact.temp: "
                     + Colorizer.ANSI_BLUE
@@ -65,6 +65,7 @@ public class Main {
                     + "ERROR! BAD JSON-SYNTAX IN WEATHER SERVICE`S RESPONSE (or NULL RESPONSE)!");
             return;
         }
+
         try {
             System.out.println(Colorizer.ANSI_GREEN + "forecasts.parts.day.temp_avg: "
                     + Colorizer.ANSI_BLUE + TempAvgCounter.countTempAvg(jsonObjectForecast, 7));
